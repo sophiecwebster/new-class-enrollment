@@ -12,6 +12,7 @@ library(googlesheets4)
 library(fs)
 library(readxl)
 library(janitor)
+library(gt)
 spring_2019 <- download.file("https://registrar.fas.harvard.edu/files/fas-registrar/files/class_enrollment_summary_by_term_3.22.19_0.xlsx", "spring_2019.xlsx")
 download.file("https://registrar.fas.harvard.edu/files/fas-registrar/files/class_enrollment_summary_by_term_2.25.20_0.xlsx", "spring_2020.xlsx")
 
@@ -20,7 +21,10 @@ spring_2020 <- read_excel("./spring_2020.xlsx", skip = 3) %>% clean_names() %>% 
 
 new <- spring_2020 %>% anti_join(spring_2019, by = "course_id")
 
-top <- new %>% arrange(desc(total)) %>% slice(1:5)
+top <- new %>% arrange(desc(total)) %>% slice(1:5) %>% select(course_name, total)
+
+top %>%
+  gt()
 ```
 
 
